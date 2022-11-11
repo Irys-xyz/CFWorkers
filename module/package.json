@@ -1,0 +1,7 @@
+{
+  "name": "module",
+  "version": "1.0.0",
+  "license": "MIT",
+  "main": "./node.js",
+  "browser": "./browser.js"
+}
