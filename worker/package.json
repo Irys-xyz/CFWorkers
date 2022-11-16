@@ -3,6 +3,8 @@
   "version": "0.0.0",
   "devDependencies": {
     "@cloudflare/workers-types": "^3.18.0",
+    "crypto-browserify": "^3.12.0",
+    "esbuild": "^0.15.14",
     "typescript": "^4.8.4",
     "wrangler": "2.1.15"
   },
@@ -12,6 +14,10 @@
     "deploy": "wrangler publish"
   },
   "dependencies": {
-    "testmodule": "file:../module"
+    "@bundlr-network/solana-web": "^0.1.0-a2",
+    "@noble/ed25519": "^1.7.1",
+    "@vespaiach/axios-fetch-adapter": "^0.3.1",
+    "bs58": "^5.0.0",
+    "node-window-polyfill": "^1.0.2"
   }
 }
