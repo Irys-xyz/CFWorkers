@@ -24,7 +24,7 @@ export default {
 			const di = createData("Hello, Bundlr!", signer, { tags: [{ name: "content-type", value: "text/plain" }] });
 			await di.sign(signer);
 			console.log(di.id);
-			const res = await fetch("http://172.17.0.8:10000/tx/matic", { method: "POST", headers: { "content-type": "application/octet-stream" }, body: di.getRaw() });
+			const res = await fetch("http://node2.bundlr.network/tx/matic", { method: "POST", headers: { "content-type": "application/octet-stream" }, body: di.getRaw() });
 			return res;
 
 		} catch (e) {
