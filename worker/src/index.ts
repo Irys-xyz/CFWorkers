@@ -1,10 +1,5 @@
 import "node-window-polyfill/register";
-import { SolanaBundlr } from "@bundlr-network/solana-web";
-import { sign } from "@noble/ed25519";
-import bs58 from "bs58";
-import fetchAdapter from "@vespaiach/axios-fetch-adapter";
-import { setIsBrowser } from "@bundlr-network/client/common";
-
+import { EthereumSigner, createData } from "../../module";
 export interface Env {
 	// Example binding to KV. Learn more at https://developers.cloudflare.com/workers/runtime-apis/kv/
 	// MY_KV_NAMESPACE: KVNamespace;
@@ -23,37 +18,15 @@ export default {
 		ctx: ExecutionContext
 	): Promise<Response> {
 		try {
-			// these can be pre-derived and hardcoded as an env var. (encode as hex string, store in .env, decode here.)
-			const key = bs58.decode("...");
-			const priv = key.subarray(0, 32);
-			const pub = key.subarray(32, 64);
 
-			const providerShim = {
-				publicKey: {
-					toBuffer: () => pub,
-					byteLength: 32
-				},
-				signMessage: async (message: Uint8Array) => {
-					return await sign(Buffer.from(message), priv);
-				},
+			const key = "...";
+			const signer = new EthereumSigner(key);
+			const di = createData("Hello, Bundlr!", signer, { tags: [{ name: "content-type", value: "text/plain" }] });
+			await di.sign(signer);
+			console.log(di.id);
+			const res = await fetch("http://172.17.0.8:10000/tx/matic", { method: "POST", headers: { "content-type": "application/octet-stream" }, body: di.getRaw() });
+			return res;
 
-			};
-
-			const nodeUrl = "https://devnet.bundlr.network";
-			setIsBrowser(true);
-			//@ts-ignore
-			const b = new SolanaBundlr(nodeUrl, providerShim, { api: { adapter: fetchAdapter } });
-			await b.ready();
-
-			const tx = b.createTransaction("Hello world!");
-			await tx.sign();
-			console.log("Tx is valid?", await tx.isValid());
-
-			const res = await tx.upload();
-
-			console.log(JSON.stringify(res));
-
-			return new Response(JSON.stringify(res));
 		} catch (e) {
 			console.log(e);
 			console.log("ERROR", JSON.stringify(e));
