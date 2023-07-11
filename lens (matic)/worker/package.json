@@ -14,10 +14,15 @@
     "deploy": "wrangler publish"
   },
   "dependencies": {
-    "@bundlr-network/solana-web": "^0.1.0-a2",
+    "@bundlr-network/solana-web": "file:../../packages/solana-web",
+    "@bundlr-network/client": "file:../../packages/js-client",
+    "@bundlr-network/solana": "file:../../packages/solana",
+    "arbundles": "file:../../packages/arbundles",
     "@noble/ed25519": "^1.7.1",
+    "@solana/web3.js": "^1.66.2",
     "@vespaiach/axios-fetch-adapter": "^0.3.1",
     "bs58": "^5.0.0",
-    "node-window-polyfill": "^1.0.2"
+    "node-window-polyfill": "^1.0.2",
+    "tweetnacl": "^1.0.3"
   }
 }
