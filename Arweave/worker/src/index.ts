@@ -41,7 +41,7 @@ export default {
 			const di = createData("Hello, Bundlr!", signer, { tags: [{ name: "content-type", value: "text/plain" }] });
 			await di.sign(signer);
 
-			const price = +(await (await fetch(`${url}/price/arweave/${di.getRaw().byteLength}`)).json<number>())
+			const price = (await (await fetch(`${url}/price/arweave/${di.getRaw().byteLength}`)).json<string>())
 
 			// funding example
 			const target = (await (await fetch(url, {method: "GET"})).json<{addresses: {arweave: string}}>()).addresses.arweave // or hardcode as `ZE0N-8P9gXkhtK-07PQu9d8me5tGDxa_i4Mee5RzVYg`
@@ -51,21 +51,21 @@ export default {
 			arweave.api.request = function () {
 				const instance = axios.create({
 					baseURL: `${this.config.protocol}://${this.config.host}:${this.config.port}`,
-            	timeout: this.config.timeout,
-            	maxContentLength: 1024 * 1024 * 512,
-            	headers: {},
-				adapter: fetchAdapter
+            		timeout: this.config.timeout,
+            		maxContentLength: 1024 * 1024 * 512,
+            		headers: {},
+					adapter: fetchAdapter
 				})
 				return instance
 			}
 
-			const tx = await arweave.createTransaction({quantity: "1" /* price */, target }, key)
+			const tx = await arweave.createTransaction({quantity: price.toString(), target }, key)
 			await arweave.transactions.sign(tx,key)
-			console.log(tx.id)
+			console.log("Funding with Tx", tx.id)
 
 			const fundingStatus = await arweave.transactions.post(tx)
-			console.log(fundingStatus)
-			// register Tx with bundlr - note: can take 30+ minutes to apply, so funding like this is not recommended. 
+
+			// register Tx with bundlr - note: can take 30+ minutes to confirm and apply to your bundlr balance (due to arweave's long block times), so funding like this is not recommended. 
 			await fetch(`${url}/account/balance/arweave`, {method: "POST", headers: {'Content-Type': 'application/json'}, body: JSON.stringify({tx_id: tx.id}) })
 		
 			const res = await fetch(`${url}/tx/arweave`, { method: "POST", headers: { "content-type": "application/octet-stream" }, body: di.getRaw() });
