@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "devDependencies": {
     "@cloudflare/workers-types": "^3.18.0",
+    "@types/node": "^20.8.2",
     "crypto-browserify": "^3.12.0",
     "esbuild": "^0.15.14",
     "typescript": "^4.8.4",
@@ -14,11 +15,8 @@
     "deploy": "wrangler publish"
   },
   "dependencies": {
-    "@noble/ed25519": "^1.7.1",
-    "@solana/web3.js": "^1.66.2",
     "@vespaiach/axios-fetch-adapter": "^0.3.1",
-    "bs58": "^5.0.0",
-    "node-window-polyfill": "^1.0.2",
-    "tweetnacl": "^1.0.3"
+    "arbundles": "^0.9.8",
+    "node-window-polyfill": "^1.0.2"
   }
 }

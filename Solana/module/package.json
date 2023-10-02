@@ -1,0 +1,16 @@
+{
+  "name": "module",
+  "version": "1.0.0",
+  "license": "MIT",
+  "main": "./node.js",
+  "browser": "./browser.js",
+  "dependencies": {
+    "base64url": "^3.0.1",
+    "bs58": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.18",
+    "arbundles": "^0.9.8",
+    "arweave": "^1.14.0"
+  }
+}
